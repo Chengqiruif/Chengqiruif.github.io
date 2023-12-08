@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<!--<html>
+<head>
+    <title>设置列车运行图</title>
+</head>
+<frameset rows="30%,*">
+    <frame src="23142" noresize="noresize" />
+    <frame src="http://cnrail.geogv.org/zhcn/" noresize="noresize" />
+</frameset>
+</html>-->
+<html>
+<head>
+    <title>设置列车运行图</title>
+    <style type="text/css">
+        #panel {
+            margin: auto;
+            width: 500px;
+        }
+
+        * {
+            font:bold;
+            font-family: 'Microsoft JhengHei';
+        }
+
+        .jf {
+            width: 100px;
+        }
+
+        .jf2 {
+            width: 30px;
+        }
+
+        #dh {
+            width: 100px;
+        }
+
+        #cpu {
+            right: 0px;
+            position: fixed;
+        }
+
+        #show {
+            position: fixed;
+        }
+
+            #show iframe {
+                position: fixed;
+            }
+
+        #txt {
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            right: 0px;
+        }
+
+        #cpu {
+            height: 69%;
+            width: 20%;
+        }
+    </style>
+    <script>
+        //alert("fuck♂ you.");
+        window.onload = function () {
+            document.getElementById("ast").value = 1.908;
+            document.getElementById("hs").value = 310;
+            cfs();
+            //cpu();
+        }
+        window.onresize = window.onload;
+        function cfs() {
+            document.getElementById("page").height = document.documentElement.clientHeight * 0.69;
+            document.getElementById("page").width = document.documentElement.clientWidth * 0.8;
+        }
+        function cpu() {
+            document.getElementById("cpu").height = document.documentElement.clientHeight;
+            document.getElementById("cpu").width = document.documentElement.clientWidth;
+        }
+        function Add() {
+            var h, m, d;
+            h = document.getElementById("jh1").value;
+            m = document.getElementById("jm1").value;
+            h = Number(document.getElementById("jh2").value) + Number(h);
+            m = Number(document.getElementById("jm2").value) + Number(m);
+            h = Number(Math.floor(m / 60)) + Number(h);
+            //alert(m);
+            m = Math.floor(m % 60);
+            d = Math.floor(h / 24);
+            h = Math.floor(h % 24);
+            document.getElementById("dh").value = h + "时" + m + "分 +" + d;
+        }
+        function Build() {
+            var h, m, s, tmp, tmp1, text;
+            var hs = document.getElementById("hs").value;
+            tmp = h = m = s = 0;
+            tmp = (Number(Math.abs(hs - document.getElementById("s1").value)) + 1) * (hs / 2) / 3600 * document.getElementById("ast").value;
+            tmp1 = (Number(Math.abs(hs - document.getElementById("s2").value)) + 1) * (hs / 2) / 3600 * document.getElementById("ast").value;
+            if (document.getElementById("_long").value < tmp + tmp1) {
+                tmp = document.getElementById("_long").value / 2 / document.getElementById("ast").value * 3600 * 2;
+                tmp = (Math.sqrt(1 - 4 * (0 - tmp)) - 1) / 2;
+                s = tmp / document.getElementById("ast").value * 2;
+                s = Math.ceil(s);
+                m = s / 60;
+                m = Math.ceil(s);
+                s = 0;
+            }
+            else {
+                s = (hs - document.getElementById("s1").value) / document.getElementById("ast").value;
+                s = (hs - document.getElementById("s2").value) / document.getElementById("ast").value;
+                s = Math.ceil(s);
+                m = s / 60;
+                m = Math.ceil(m);
+                s = 0;
+                h = m / 60;
+                m = m % 60;
+                h = Math.floor(h);
+                tmp1 += (Number(hs) + 1) * (hs / 2) / 3600 * document.getElementById("ast").value;
+                tmp = document.getElementById("_long").value - tmp;
+                s = tmp / hs * 3600;
+                s = Math.ceil(s);
+                m += s / 60;
+                m = Math.ceil(m);
+                s += 0;
+                h += m / 60;
+                h = Math.floor(h);
+                m = m % 60;
+            }
+            text = h + "时" + m + "分";
+            document.getElementById("res").value = text;
+            if (document.getElementById("chk").checked == true)
+                alert(text);
+        }
+        function ChangeAST() {
+            var info = document.getElementById("train");
+            var text = info.options[info.selectedIndex].text;
+            if (false)
+                alert("fuck♂ you.");
+            else if (text.includes("CR400AF"))
+                document.getElementById("ast").value = 1.908;
+            else if (text.includes("CR400BF"))
+                document.getElementById("ast").value = 1.764;
+            else if (text.includes("CR300AF"))
+                document.getElementById("ast").value = 1.908;
+            else if (text.includes("CR300BF"))
+                document.getElementById("ast").value = 1.764;
+            else if (text.includes("CR200J"))
+                document.getElementById("ast").value = 1.26;
+            else if (text == "CRH380A" || text == "CRH380AN" || text == "CRH2C")
+                document.getElementById("ast").value = 1.4;
+            else if (text == "CRH380AL")
+                document.getElementById("ast").value = 1.69;
+            else if (text.includes("CRH380B") || text.includes("CRH380C"))
+                document.getElementById("ast").value = 1.44;
+            else if (text.includes("CRH380D"))
+                document.getElementById("ast").value = 1.728;
+            else if (text.includes("CRH1"))
+                document.getElementById("ast").value = 2.16;
+            else if (text == "CRH2A" || text == "CRH2B" || text == "CRH2E")
+                document.getElementById("ast").value = 1.296;
+            else if (text == "CRH3C")
+                document.getElementById("ast").value = 1.37;
+            else if (text == "CRH3A")
+                document.getElementById("ast").value = 1.6;
+            else if (text == "CRH3A-A")
+                document.getElementById("ast").value = 2.34;
+            else if (text.includes("CRH5"))
+                document.getElementById("ast").value = 1.8;
+            else if (text.includes("CRH6A") || text == "CJ6" || text == "D1" || text == "D2")
+                document.getElementById("ast").value = 2.33;
+            else if (text.includes("CRH6F"))
+                document.getElementById("ast").value = 2.88;
+            else if (text.includes("NDJ3"))
+                document.getElementById("ast").value = 1.26;
+            else
+                alert("fuck♂ you.");
+        }
+        function opt() {
+            document.getElementById("ds").value = Math.abs(document.getElementById("js1").value - document.getElementById("js2").value);
+        }
+    </script>
+</head>
+<body id="bod" style="">
+    <p>
+        <div id="panel">
+            <div id="set">
+                <form>
+                    <fieldset>
+                        <legend><font>基本设置</font></legend>
+                        <!--<font>从</font><input type="text" /><br />
+                        <font>到</font><input type="text" /><br />-->
+                        <!--&nbsp;&nbsp;-->
+
+                        <font>里程</font><input type="number" value="0" id="_long" /><font>km</font><br />
+                        <font>最高速度</font><input type="number" value="310" id="hs" />km&frasl;h<br />
+                        <!--<input type="radio" name="s1" />经过前站&nbsp;&nbsp;<input type="radio" name="s1" checked="checked" />经停前站<br />
+                        <input type="radio" name="s2" />经过后站&nbsp;&nbsp;<input type="radio" name="s2" checked="checked" />经停后站<br />-->
+                        前站站前限速<input type="number" id="s1" value="0" class="jf" />&nbsp;&nbsp;后站站后限速<input type="number" id="s2" value="0" class="jf" /><br />
+
+                        <!--<button onclick="AddL()">添加</button>-->
+                    </fieldset>
+                    <fieldset>
+                        <legend><font>高级设置</font></legend>
+                        车型
+                        <select size="1" onchange="ChangeAST()" id="train">
+                            <optgroup label="CR400AF">
+                                <option>CR400AF</option>
+                                <option>CR400AF-A</option>
+                                <option>CR400AF-B</option>
+                                <option>CR400AF-G</option>
+                                <option>CR400AF-C</option>
+                                <option>CR400AF-Z</option>
+                                <option>CR400AF-AZ</option>
+                                <option>CR400AF-BZ</option>
+                                <option disabled="disabled">KCIC400AF</option>
+                            </optgroup>
+                            <optgroup label="CR400BF">
+                                <option>CR400BF</option>
+                                <option>CR400BF-A</option>
+                                <option>CR400BF-B</option>
+                                <option>CR400BF-G</option>
+                                <option>CR400BF-C</option>
+                                <option>CR400BF-Z</option>
+                                <option>CR400BF-AZ</option>
+                                <option>CR400BF-BZ</option>
+                            </optgroup>
+                            <optgroup label="CR300AF">
+                                <option>CR300AF</option>
+                            </optgroup>
+                            <optgroup label="CR300BF">
+                                <option>CR300BF</option>
+                            </optgroup>
+                            <optgroup label="CR200J">
+                                <option>CR200J1-A</option>
+                                <option>CR200J2-A</option>
+                                <option>CR200J3-A</option>
+                                <option>CR200J1-B</option>
+                                <option>CR200J2-B</option>
+                                <option>CR200J3-B</option>
+                                <option>LCR200J3-B</option>
+                                <option>CR200JS-G</option>
+                                <option>CR200J1-C</option>
+                                <option>CR200J1-D</option>
+                                <option>CR200J3-C</option>
+                            </optgroup>
+                            <optgroup label="CRH380A">
+                                <option>CRH380A</option>
+                                <option>CRH380AL</option>
+                                <option>CRH380AN</option>
+                                <option disabled="disabled">CRH380AM</option>
+                            </optgroup>
+                            <optgroup label="CRH380B">
+                                <option>CRH380BG</option>
+                                <option>CRH380B</option>
+                                <option>CRH380BL</option>
+                                <option>CRH380CL</option>
+                            </optgroup>
+                            <optgroup label="CRH380D">
+                                <option>CRH380D</option>
+                            </optgroup>
+                            <optgroup label="CRH1">
+                                <option>CRH1A</option>
+                                <option>CRH1B</option>
+                                <option>CRH1E</option>
+                                <option>CRH1A-A</option>
+                            </optgroup>
+                            <optgroup label="CRH2">
+                                <option>CRH2A</option>
+                                <option>CRH2B</option>
+                                <option>CRH2C</option>
+                                <option>CRH2E</option>
+                                <option>CRH2G</option>
+                            </optgroup>
+                            <optgroup label="CRH3">
+                                <option>CRH3A</option>
+                                <option>CRH3A-A</option>
+                                <option>CRH3C</option>
+                            </optgroup>
+                            <optgroup label="CRH5">
+                                <option>CRH5A</option>
+                                <option>CRH5E</option>
+                                <option>CRH5G</option>
+                            </optgroup>
+                            <optgroup label="CRH6">
+                                <option>CRH6A</option>
+                                <option>CRH6A-A</option>
+                                <option>CRH6F</option>
+                                <option>CRH6F-A</option>
+                            </optgroup>
+                            <optgroup label="其他">
+                                <option>CJ6</option>
+                                <option>NDJ3</option>
+                                <option>NDJ3N</option>
+                                <option disabled="disabled">D1</option>
+                                <option disabled="disabled">D2</option>
+                            </optgroup>
+                        </select><br />
+                        加速度(km/h/s)<input type="text" value="1.908" disabled="disabled" id="ast" />
+                    </fieldset>
+                </form>
+            </div>
+            <div id="build">
+                <button onclick="Build()">计算时间</button>&nbsp;&nbsp;<input type="text" id="res" disabled="disabled" /><input type="checkbox" id="chk" />弹窗显示结果<br />
+                |&nbsp;<input type="number" id="js1" class="jf" />&nbsp;-&nbsp;<input type="number" id="js2" class="jf" />&nbsp;|&nbsp;=<input type="text" id="ds" disabled="disabled" class="jf" />
+                <button onclick="opt()">计算减法</button><br />
+                <input type="number" id="jh1" class="jf2" />时<input type="number" id="jm1" class="jf2" />分
+                &nbsp;+&nbsp;<input type="number" id="jh2" class="jf2" />时<input type="number" id="jm2" class="jf2" />分
+                &nbsp;=&nbsp;<input type="number" id="dh" disabled="disabled" />&nbsp;<button onclick="Add()">计算时间和</button>
+            </div>
+        </div>
+    </p>
+    <div id="show">
+        <iframe height="100%" width="100%" src="http://cnrail.geogv.org/zhcn/" id="page" onload="cfs()" name="page"></iframe>
+        <div id="cpu" onload="//cpu()">
+            <textarea rows="100%" cols="100%" id="txt" onload=""></textarea>
+        </div>
+    </div>
+</body>
+</html>
